@@ -5,8 +5,8 @@ const ytdl = require('ytdl-core')
 const Youtube = require('simple-youtube-api')
 const ms = require('ms')
 const DBL = require("dblapi.js");
-const TOKEN = 'NzY1MzMwMzUwMzgxMzM0NTg4.X4TPbg.5fKtBAb-sWMEZ9YAsLSIp6odhkk'
-const YOUTUBE_API = 'AIzaSyCSXPwiEi82MQYP8i27AMzg-eWnP_9vL2Y'
+const TOKEN = ''
+const YOUTUBE_API = ''
 const fetch = require('node-fetch')
 const cheerio = require('cheerio')
 const lyricsFinder = require("lyrics-finder");
@@ -14,7 +14,7 @@ const lyricsFinder = require("lyrics-finder");
 const client = new Client({ disableEveryone: true })
 
 // Optional events
-const dbl = new DBL('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Ijc2NTMzMDM1MDM4MTMzNDU4OCIsImJvdCI6dHJ1ZSwiaWF0IjoxNjA2MjYxMDk4fQ.ogIUNQqRHk176YOGpAoMOLBsLrk_nqkmz4vHu4DFZS8', client);
+const dbl = new DBL('', client);
 dbl.on('posted', () => {
     console.log('Server count posted!');
 })
@@ -71,10 +71,10 @@ client.on('message', async message => {
 
         if (url.match(/^https?:\/\/(www.youtube.com|youtube.com)\/playlist(.*)$/)) {
             const playlist = await youtube.getPlaylist(url).catch(erro => {
-                return message.reply("A Playlist é privada ou não existe!")
+                return message.reply("A Playlist Ã© privada ou nÃ£o existe!")
             });
             const videos = await playlist.getVideos().catch(erro => {
-                message.reply("Ocorreu um problema ao colocar um dos vídeos da playlist na fila!'")
+                message.reply("Ocorreu um problema ao colocar um dos vÃ­deos da playlist na fila!'")
             });
             for (const video of Object.values(videos)) {
                 try {
@@ -427,7 +427,7 @@ const serverQueue = queue.get(message.guild.id)
     }
 
     let lyricsEmbed = new MessageEmbed()
-      .setAuthor(`${serverQueue.songs[0].title} � Lyrics`, "https://i.ibb.co/FDhtDcB/blue-cd.gif")
+      .setAuthor(`${serverQueue.songs[0].title}  Lyrics`, "https://i.ibb.co/FDhtDcB/blue-cd.gif")
       .setThumbnail(serverQueue.songs[0].img)
       .setColor("BLACK")
       .setDescription(lyrics)
@@ -449,7 +449,7 @@ const serverQueue = queue.get(message.guild.id)
     }
 
     let lyricsEmbed = new MessageEmbed()
-      .setAuthor(`${message.content} � Lyrics`, "https://i.ibb.co/FDhtDcB/blue-cd.gif")
+      .setAuthor(`${message.content}  Lyrics`, "https://i.ibb.co/FDhtDcB/blue-cd.gif")
       .setColor("BLACK")
       .setDescription(lyrics)
       .setTimestamp();
@@ -465,22 +465,22 @@ const serverQueue = queue.get(message.guild.id)
         const embeds = embedGenerator(serverQueue)
 
         const queueEmbed = await message.channel.send(`Queue: ${currentPage + 1}/${embeds.length}`, embeds[currentPage])
-        await queueEmbed.react('⬅️')
-        await queueEmbed.react('➡️')
+        await queueEmbed.react('â¬ï¸')
+        await queueEmbed.react('â¡ï¸')
 
 
-        const reactionFilter = (reaction, user) => ['⬅️', '➡️'].includes(reaction.emoji.name) && (message.author.id === user.id)
+        const reactionFilter = (reaction, user) => ['â¬ï¸', 'â¡ï¸'].includes(reaction.emoji.name) && (message.author.id === user.id)
         const collector = queueEmbed.createReactionCollector(reactionFilter)
 
         collector.on('collect', (reaction, user) => {
-            if (reaction.emoji.name === '➡️') {
+            if (reaction.emoji.name === 'â¡ï¸') {
                 if (currentPage < embeds.length - 1) {
                     currentPage += 1;
                     queueEmbed.edit(`Queue: ${currentPage + 1}/${embeds.length}`, embeds[currentPage])
 
 
                 }
-            } else if (reaction.emoji.name === '⬅️') {
+            } else if (reaction.emoji.name === 'â¬ï¸') {
                 if (currentPage !== 0) {
                     currentPage -= 1
                     queueEmbed.edit(`Queue: ${currentPage + 1}/${embeds.length}`, embeds[currentPage])
